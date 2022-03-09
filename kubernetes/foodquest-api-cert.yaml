@@ -1,0 +1,12 @@
+kind: Certificate
+apiVersion: cert-manager.io/v1alpha2
+metadata:
+  name: api-foodquest-cc-cert
+  namespace: istio-system
+spec:
+  dnsNames:
+    - api.foodquest.cc
+  issuerRef:
+    kind: ClusterIssuer
+    name: letsencrypt-prod
+  secretName: api-foodquest-cc-tls
