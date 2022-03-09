@@ -32,7 +32,7 @@ metadata:
     app: api
     version: v1
 spec:
-  replicas: 15
+  replicas: 4
   selector:
     matchLabels:
       app: api
@@ -51,7 +51,7 @@ spec:
       serviceAccountName: foodquest-api
       containers:
         - name: api
-          image: 061044801495.dkr.ecr.us-west-2.amazonaws.com/foodquest-api:1.1.0
+          image: 061044801495.dkr.ecr.us-west-2.amazonaws.com/foodquest-api:1.2.0
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 3000
