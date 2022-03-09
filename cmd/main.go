@@ -157,6 +157,10 @@ func main() {
 			panic(err)
 		}
 
+		if _, err := conn.ExecContext(c.Context(), `update users set last_login=$1 where id=$2`, time.Now(), u.ID); err != nil {
+			panic(err)
+		}
+
 		return c.Status(fiber.StatusOK).JSON(fiber.Map{
 			"token": t,
 		})
