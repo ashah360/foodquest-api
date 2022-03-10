@@ -191,6 +191,21 @@ func main() {
 
 	})
 
+	type RestaurantQuery struct {
+		OwnerEmail     string `json:"owner_email" db:"owner_email"`
+		RestaurantName string `json:"restaurant_name" db:"restaurant_name"`
+	}
+
+	app.Get("/restaurants", func(c *fiber.Ctx) error {
+		var r []*RestaurantQuery
+
+		if err := conn.SelectContext(c.Context(), &r, `select users.email as owner_email, restaurant.name as restaurant_name from users right join restaurant on users.id = restaurant.owner_id`); err != nil && err != sql.ErrNoRows {
+			panic(err)
+		}
+
+		return c.Status(fiber.StatusOK).JSON(r)
+	})
+
 	if err := app.Listen(fmt.Sprintf(":%s", port)); err != nil {
 		log.Println("An error occured, shutting down gracefully. ", err)
 		_ = app.Shutdown()
