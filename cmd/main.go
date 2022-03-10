@@ -168,6 +168,7 @@ func main() {
 
 	app.Get("/users/me", func(c *fiber.Ctx) error {
 		t := auth.ExtractJWT(c)
+
 		if t == "" {
 			return fibertools.Message(c, fiber.StatusUnauthorized, "User is not authenticated")
 		}
@@ -188,6 +189,47 @@ func main() {
 		}
 
 		return c.Status(200).JSON(u.ToSimple())
+
+	})
+
+	app.Get("/users/me/lastLogin", func(c *fiber.Ctx) error {
+		t := auth.ExtractJWT(c)
+
+		if t == "" {
+			return fibertools.Message(c, fiber.StatusUnauthorized, "User is not authenticated")
+		}
+
+		uid, err := auth.ValidateJWT(t)
+		if err != nil {
+			panic(err)
+		}
+
+		var u model.User
+
+		if err := conn.GetContext(c.Context(), &u, "select * from users where id=$1", uid); err != nil {
+			if err == sql.ErrNoRows {
+				panic(cerror.ErrUserDoesNotExist)
+			}
+
+			panic(err)
+		}
+
+		msg := "never"
+
+		last := u.LastLogin
+		if last != nil {
+			m := int(time.Since(*last).Minutes())
+			p := ""
+			if m != 1 {
+				p = "s"
+			}
+			msg = fmt.Sprintf("%d minute%s ago", m, p)
+		}
+
+		return c.Status(200).JSON(fiber.Map{
+			"user_id":        u.ID,
+			"last_logged_in": msg,
+		})
 
 	})
 
