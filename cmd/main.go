@@ -12,7 +12,7 @@ import (
 	"os"
 )
 
-var port = "4000"
+var port = "3000"
 
 func main() {
 	creds := db.DBInfo{
