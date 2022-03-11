@@ -69,3 +69,18 @@ func ExtractJWT(c *fiber.Ctx) string {
 
 	return ""
 }
+
+func IssueToken(userID string) (string, error) {
+	token := jwt.New(jwt.SigningMethodHS256)
+	claims := token.Claims.(jwt.MapClaims)
+	claims["id"] = userID
+	claims["exp"] = time.Now().Add(time.Hour * 24 * 7).Unix()
+	claims["iat"] = time.Now().Unix()
+
+	t, err := token.SignedString([]byte(os.Getenv("FOODQUEST_JWT_SECRET")))
+	if err != nil {
+		return "", err
+
+	}
+	return t, nil
+}
