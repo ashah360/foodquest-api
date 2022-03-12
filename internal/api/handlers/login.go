@@ -46,6 +46,12 @@ func (h *HandlerGroup) Login(c *fiber.Ctx) error {
 		panic(err)
 	}
 
+	cookie := new(fiber.Cookie)
+	cookie.Name = "_fqt"
+	cookie.Value = t
+	cookie.Expires = time.Now().Add(24 * time.Hour * 7)
+	c.Cookie(cookie)
+
 	return c.Status(fiber.StatusOK).JSON(fiber.Map{
 		"token": t,
 	})

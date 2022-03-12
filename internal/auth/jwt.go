@@ -11,7 +11,7 @@ import (
 	"time"
 )
 
-var cookieAndQueryName = "access_token"
+var cookieAndQueryName = "_fqt"
 
 // ValidateJWT validates the auth token and extracts the user ID
 func ValidateJWT(token string) (string, error) {
