@@ -4,6 +4,7 @@ go 1.16
 
 require (
 	github.com/ashah360/fibertools v0.0.3
+	github.com/brianvoe/gofakeit v3.18.0+incompatible // indirect
 	github.com/form3tech-oss/jwt-go v3.2.5+incompatible // indirect
 	github.com/gofiber/fiber/v2 v2.29.0
 	github.com/jmoiron/sqlx v1.3.4

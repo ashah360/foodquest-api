@@ -19,4 +19,11 @@ type Restaurant struct {
 	State          string        `json:"state" db:"state"`
 	PostalCode     string        `json:"postalCode" db:"postal_code"`
 	Country        string        `json:"country" db:"country"`
+	ImageURL       string        `json:"imageUrl" db:"image_url"`
+}
+
+type RestaurantPageData struct {
+	Restaurant
+	Stars      *float64 `json:"stars" db:"stars"`
+	NumRatings *int     `json:"numRatings" db:"num_ratings"`
 }

@@ -18,3 +18,16 @@ type MenuItem struct {
 	Price           int           `json:"price" db:"price"`
 	ImageURL        db.NullString `json:"imageUrl" db:"image_url"`
 }
+
+type RestaurantMenuItem struct {
+	RestaurantID    string        `json:"restaurantId" db:"restaurant_id"`
+	MenuID          string        `json:"menuId" db:"menu_id"`
+	MenuName        string        `json:"menuName" db:"menu_name"`
+	MenuDescription db.NullString `json:"menuDescription" db:"menu_description"`
+	MenuItemID      string        `json:"menuItemId" db:"menu_item_id"`
+	Title           string        `json:"title" db:"title"`
+	Section         db.NullString `json:"section" db:"section"`
+	ItemDescription db.NullString `json:"itemDescription" db:"item_description"`
+	Price           int           `json:"price" db:"price"`
+	ImageURL        db.NullString `json:"imageUrl" db:"image_url"`
+}

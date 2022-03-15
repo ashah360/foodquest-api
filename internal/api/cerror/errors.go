@@ -5,10 +5,11 @@ import (
 )
 
 var (
-	ErrUserDoesNotExist         = fiber.NewError(fiber.StatusUnauthorized, "User does not exist")
+	ErrUserDoesNotExist         = fiber.NewError(fiber.StatusNotFound, "User does not exist")
 	ErrInvalidAccountDetails    = fiber.NewError(fiber.StatusUnauthorized, "Invalid account details")
 	ErrUserSnapshotDoesNotExist = fiber.NewError(fiber.StatusNotFound, "User token expired or not found")
 	ErrMalformedToken           = fiber.NewError(fiber.StatusBadRequest, "Malformed token")
 	ErrInvalidToken             = fiber.NewError(fiber.StatusBadRequest, "Invalid token")
 	ErrMissingToken             = fiber.NewError(fiber.StatusBadRequest, "Missing token")
+	ErrResourceNotFound         = fiber.NewError(fiber.StatusNotFound, "Resource not found")
 )
