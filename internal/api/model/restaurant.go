@@ -27,3 +27,10 @@ type RestaurantPageData struct {
 	Stars      *float64 `json:"stars" db:"stars"`
 	NumRatings *int     `json:"numRatings" db:"num_ratings"`
 }
+
+type BestSellingItem struct {
+	ID        string `json:"id" db:"id"`
+	ItemName  string `json:"itemName" db:"item_name"`
+	Quantity  int    `json:"quantity" db:"quantity"`
+	TotalCost int    `json:"totalCost" db:"total_cost"`
+}

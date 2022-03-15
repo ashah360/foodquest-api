@@ -78,8 +78,14 @@ func main() {
 	server.Get("/users/me/orders", h.GetUserOrders)
 	server.Get("/users/me", h.GetCurrentUser)
 
+	server.Get("/userOrderCounts", h.GetOrderCountForUsers)
+
+	server.Get("/items/recentlyPurchased", h.GetRecentlyPurchasedItems)
+
+	server.Get("/restaurants/featured", h.GetFeaturedRestaurants)
 	server.Get("/restaurants/:id", h.GetRestaurantByID)
 	server.Get("/restaurants/:id/menuData", h.GetRestaurantMenuData)
+	server.Get("/restaurants/:id/bestSelling", h.GetBestSellingItems)
 	server.Get("/restaurants", h.GetAllRestaurants)
 
 	if err := server.Listen(fmt.Sprintf(":%s", port)); err != nil {

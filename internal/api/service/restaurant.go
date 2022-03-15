@@ -3,6 +3,7 @@ package service
 import (
 	"context"
 	"database/sql"
+	"fmt"
 	"github.com/ashah360/foodquest-api/internal/api/cerror"
 	"github.com/ashah360/foodquest-api/internal/api/db"
 	"github.com/ashah360/foodquest-api/internal/api/model"
@@ -16,8 +17,8 @@ type RestaurantService interface {
 	GetRestaurantMenuItems(ctx context.Context, restaurantID string) ([]*model.RestaurantMenuItem, error)
 	GetRestaurantMenuData(ctx context.Context, restaurantID string) (*RestaurantMenuData, error)
 	GetAllRestaurants(ctx context.Context) ([]*model.Restaurant, error)
+	GetBestSellingItems(ctx context.Context, restaurantID string, days int) ([]*model.BestSellingItem, error)
 }
-
 type restaurantService struct {
 	db *sqlx.DB
 }
@@ -32,6 +33,31 @@ func (s *restaurantService) GetAllRestaurants(ctx context.Context) ([]*model.Res
 	}
 
 	return r, nil
+}
+
+func (s *restaurantService) GetBestSellingItems(ctx context.Context, restaurantID string, days int) ([]*model.BestSellingItem, error) {
+	var i []*model.BestSellingItem
+
+	q := `
+SELECT menu_item.id, title AS "item_name", SUM(quantity) AS "quantity", SUM(price * quantity) AS "total_cost"
+FROM line_item 
+LEFT JOIN menu_item ON line_item.menu_item_id = menu_item.id
+RIGHT JOIN menu ON menu.id = menu_item.menu_id
+WHERE line_item.order_id IN (SELECT id FROM order_details WHERE order_details.created_at > NOW() - INTERVAL ` + fmt.Sprintf("'%d", days) + ` DAY')
+AND restaurant_id = $1
+GROUP BY menu_item.id, title
+ORDER BY SUM(quantity) DESC
+`
+
+	if err := s.db.SelectContext(ctx, &i, q, restaurantID); err != nil {
+		if err == sql.ErrNoRows {
+			i = []*model.BestSellingItem{}
+			return i, nil
+		}
+		return nil, err
+	}
+
+	return i, nil
 }
 
 func (s *restaurantService) GetRestaurantMenuItems(ctx context.Context, restaurantID string) ([]*model.RestaurantMenuItem, error) {

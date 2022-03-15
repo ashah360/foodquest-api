@@ -27,6 +27,15 @@ type PublicUser struct {
 	LastLogin *time.Time `json:"lastLogin" db:"last_login"`
 }
 
+type UserOrders struct {
+	ID          string `json:"id" db:"id"`
+	Email       string `json:"email" db:"email"`
+	FirstName   string `json:"firstName" db:"first_name"`
+	LastName    string `json:"lastName" db:"last_name"`
+	PhoneNumber string `json:"phoneNumber" db:"phone_number"`
+	Orders      int    `json:"orders" db:"orders"`
+}
+
 func (u *User) ToPublicUser() *PublicUser {
 	return &PublicUser{
 		ID:          u.ID,
